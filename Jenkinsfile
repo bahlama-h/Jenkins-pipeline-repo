@@ -11,34 +11,32 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/bahlama-h/Jenkins-pipeline-repo.git'
             }
         }
-        stage('Build and Push Docker Images') {
-            stage('Build and Push app1') {
-                steps {
-                    script {
-                        dockerImage1 = docker.build("bahmah2024/app1:${env.BUILD_ID}", "app1/")
-                        docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                            dockerImage1.push()
-                        }
+        stage('Build and Push app1') {
+            steps {
+                script {
+                    dockerImage1 = docker.build("bahmah2024/app1:${env.BUILD_ID}", "app1/")
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
+                        dockerImage1.push()
                     }
                 }
             }
-            stage('Build and Push app2') {
-                steps {
-                    script {
-                        dockerImage2 = docker.build("bahmah2024/app2:${env.BUILD_ID}", "app2/")
-                        docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                            dockerImage2.push()
-                        }
+        }
+        stage('Build and Push app2') {
+            steps {
+                script {
+                    dockerImage2 = docker.build("bahmah2024/app2:${env.BUILD_ID}", "app2/")
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
+                        dockerImage2.push()
                     }
                 }
             }
-            stage('Build and Push app3') {
-                steps {
-                    script {
-                        dockerImage3 = docker.build("bahmah2024/app3:${env.BUILD_ID}", "app3/")
-                        docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                            dockerImage3.push()
-                        }
+        }
+        stage('Build and Push app3') {
+            steps {
+                script {
+                    dockerImage3 = docker.build("bahmah2024/app3:${env.BUILD_ID}", "app3/")
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
+                        dockerImage3.push()
                     }
                 }
             }
