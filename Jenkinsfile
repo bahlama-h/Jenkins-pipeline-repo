@@ -85,7 +85,7 @@ pipeline {
                     // Debugging: Print current stage
                     echo 'Deploying to Swarm'
                     try {
-                        sshagent(['1c8c36bd-3b50-4ff1-af32-2706c0ea375b']) {
+                        sshagent(['my-ssh-key']) {
                             sh '''
                                 #!/bin/bash
                                 ssh -o StrictHostKeyChecking=no ubuntu@54.175.225.185 "bash /opt/ms-demo/ms-deployment/start.sh"
