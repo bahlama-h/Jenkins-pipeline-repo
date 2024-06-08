@@ -88,7 +88,7 @@ pipeline {
                         sshagent(['my-ssh-key']) {
                             sh '''
                                 #!/bin/bash
-                                ssh -o StrictHostKeyChecking=no ubuntu@54.175.225.185 "bash /opt/ms-demo/ms-deployment/start.sh"
+                                ssh -o StrictHostKeyChecking=no ubuntu@54.175.225.185 "bash -x /opt/ms-demo/ms-deployment/start.sh"
                             '''
                         }
                     } catch (Exception e) {
