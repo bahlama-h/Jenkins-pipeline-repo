@@ -16,9 +16,12 @@ pipeline {
             steps {
                 script {
                     // Debugging: Print environment variables
-                    sh 'echo "DOCKER_USERNAME: $DOCKER_USERNAME"'
-                    sh 'echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"'
-                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    sh '''
+                        #!/bin/bash
+                        echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+                        echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
+                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                    '''
                 }
             }
         }
@@ -28,8 +31,11 @@ pipeline {
                     // Debugging: Print current stage
                     echo 'Building and pushing app1'
                     try {
-                        dockerImage1 = docker.build("bahmah2024/app1:1.0.0-${env.BUILD_ID}", "app1/")
-                        sh 'docker push bahmah2024/app1:1.0.0-${env.BUILD_ID}'
+                        dockerImage1 = docker.build("bahmah2024/app1:${env.BUILD_ID}", "app1/")
+                        sh '''
+                            #!/bin/bash
+                            docker push bahmah2024/app1:${BUILD_ID}
+                        '''
                     } catch (Exception e) {
                         echo "Error during Build and Push app1: ${e.message}"
                         throw e
@@ -43,8 +49,11 @@ pipeline {
                     // Debugging: Print current stage
                     echo 'Building and pushing app2'
                     try {
-                        dockerImage2 = docker.build("bahmah2024/app2:1.0.0-${env.BUILD_ID}", "app2/")
-                        sh 'docker push bahmah2024/app2:1.0.0-${env.BUILD_ID}'
+                        dockerImage2 = docker.build("bahmah2024/app2:${env.BUILD_ID}", "app2/")
+                        sh '''
+                            #!/bin/bash
+                            docker push bahmah2024/app2:${BUILD_ID}
+                        '''
                     } catch (Exception e) {
                         echo "Error during Build and Push app2: ${e.message}"
                         throw e
@@ -58,8 +67,11 @@ pipeline {
                     // Debugging: Print current stage
                     echo 'Building and pushing app3'
                     try {
-                        dockerImage3 = docker.build("bahmah2024/app3:1.0.0-${env.BUILD_ID}", "app3/")
-                        sh 'docker push bahmah2024/app3:1.0.0-${env.BUILD_ID}'
+                        dockerImage3 = docker.build("bahmah2024/app3:${env.BUILD_ID}", "app3/")
+                        sh '''
+                            #!/bin/bash
+                            docker push bahmah2024/app3:${BUILD_ID}
+                        '''
                     } catch (Exception e) {
                         echo "Error during Build and Push app3: ${e.message}"
                         throw e
@@ -74,7 +86,10 @@ pipeline {
                     echo 'Deploying to Swarm'
                     try {
                         sshagent(['1c8c36bd-3b50-4ff1-af32-2706c0ea375b']) {
-                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.175.225.185 "bash /opt/ms-demo/ms-deployment/start.sh"'
+                            sh '''
+                                #!/bin/bash
+                                ssh -o StrictHostKeyChecking=no ubuntu@54.175.225.185 "bash /opt/ms-demo/ms-deployment/start.sh"
+                            '''
                         }
                     } catch (Exception e) {
                         echo "Error during Deploy to Swarm: ${e.message}"
@@ -99,9 +114,8 @@ pipeline {
 }
 
 def sendTelegramNotification(String message) {
-    sh """
-        curl -s -X POST https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage \
-        -d chat_id=${env.TELEGRAM_CHAT_ID} \
-        -d text="${message}"
-    """
+    sh '''
+        #!/bin/bash
+        curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d text="${message}"
+    '''
 }
