@@ -27,8 +27,13 @@ pipeline {
                 script {
                     // Debugging: Print current stage
                     echo 'Building and pushing app1'
-                    dockerImage1 = docker.build("bahmah2024/app1:${env.BUILD_ID}", "app1/")
-                    sh 'docker push bahmah2024/app1:${env.BUILD_ID}'
+                    try {
+                        dockerImage1 = docker.build("bahmah2024/app1:1.0.0-${env.BUILD_ID}", "app1/")
+                        sh 'docker push bahmah2024/app1:1.0.0-${env.BUILD_ID}'
+                    } catch (Exception e) {
+                        echo "Error during Build and Push app1: ${e.message}"
+                        throw e
+                    }
                 }
             }
         }
@@ -37,8 +42,13 @@ pipeline {
                 script {
                     // Debugging: Print current stage
                     echo 'Building and pushing app2'
-                    dockerImage2 = docker.build("bahmah2024/app2:${env.BUILD_ID}", "app2/")
-                    sh 'docker push bahmah2024/app2:${env.BUILD_ID}'
+                    try {
+                        dockerImage2 = docker.build("bahmah2024/app2:1.0.0-${env.BUILD_ID}", "app2/")
+                        sh 'docker push bahmah2024/app2:1.0.0-${env.BUILD_ID}'
+                    } catch (Exception e) {
+                        echo "Error during Build and Push app2: ${e.message}"
+                        throw e
+                    }
                 }
             }
         }
@@ -47,8 +57,13 @@ pipeline {
                 script {
                     // Debugging: Print current stage
                     echo 'Building and pushing app3'
-                    dockerImage3 = docker.build("bahmah2024/app3:${env.BUILD_ID}", "app3/")
-                    sh 'docker push bahmah2024/app3:${env.BUILD_ID}'
+                    try {
+                        dockerImage3 = docker.build("bahmah2024/app3:1.0.0-${env.BUILD_ID}", "app3/")
+                        sh 'docker push bahmah2024/app3:1.0.0-${env.BUILD_ID}'
+                    } catch (Exception e) {
+                        echo "Error during Build and Push app3: ${e.message}"
+                        throw e
+                    }
                 }
             }
         }
@@ -57,8 +72,13 @@ pipeline {
                 script {
                     // Debugging: Print current stage
                     echo 'Deploying to Swarm'
-                    sshagent(['1c8c36bd-3b50-4ff1-af32-2706c0ea375b']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.175.225.185 "bash /opt/ms-demo/ms-deployment/start.sh"'
+                    try {
+                        sshagent(['1c8c36bd-3b50-4ff1-af32-2706c0ea375b']) {
+                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.175.225.185 "bash /opt/ms-demo/ms-deployment/start.sh"'
+                        }
+                    } catch (Exception e) {
+                        echo "Error during Deploy to Swarm: ${e.message}"
+                        throw e
                     }
                 }
             }
