@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('276cff8c-20d3-4a62-9f82-b57ef2dbcef6')
+        DOCKER_HUB_CREDENTIALS = credentials('dd273feb-d360-48f6-8452-6899dd9b3550')
         TELEGRAM_BOT_TOKEN = '7315603130:AAH9xVOg4KqzhniCdRkMSh38wPN3wFZQNBg'
         TELEGRAM_CHAT_ID = '5584973934'
     }
