@@ -1,7 +1,8 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('276cff8c-20d3-4a62-9f82-b57ef2dbcef6')
+        DOCKER_USERNAME = 'bahmah2024' // Replace with your Docker Hub username
+        DOCKER_PASSWORD = 'LAMAH@ba2024' // Replace with your Docker Hub password
         TELEGRAM_BOT_TOKEN = '7315603130:AAH9xVOg4KqzhniCdRkMSh38wPN3wFZQNBg'
         TELEGRAM_CHAT_ID = '5584973934'
     }
@@ -11,13 +12,18 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/bahlama-h/Jenkins-pipeline-repo.git'
             }
         }
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                }
+            }
+        }
         stage('Build and Push app1') {
             steps {
                 script {
                     dockerImage1 = docker.build("bahmah2024/app1:${env.BUILD_ID}", "app1/")
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                        dockerImage1.push()
-                    }
+                    sh 'docker push bahmah2024/app1:${env.BUILD_ID}'
                 }
             }
         }
@@ -25,9 +31,7 @@ pipeline {
             steps {
                 script {
                     dockerImage2 = docker.build("bahmah2024/app2:${env.BUILD_ID}", "app2/")
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                        dockerImage2.push()
-                    }
+                    sh 'docker push bahmah2024/app2:${env.BUILD_ID}'
                 }
             }
         }
@@ -35,9 +39,7 @@ pipeline {
             steps {
                 script {
                     dockerImage3 = docker.build("bahmah2024/app3:${env.BUILD_ID}", "app3/")
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                        dockerImage3.push()
-                    }
+                    sh 'docker push bahmah2024/app3:${env.BUILD_ID}'
                 }
             }
         }
