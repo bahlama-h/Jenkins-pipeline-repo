@@ -18,9 +18,9 @@ pipeline {
                     // Debugging: Print environment variables
                     sh '''
                         #!/bin/bash
-                        echo "DOCKER_USERNAME: $DOCKER_USERNAME"
-                        echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
-                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                        echo "DOCKER_USERNAME: ${DOCKER_USERNAME}"
+                        echo "DOCKER_PASSWORD: ${DOCKER_PASSWORD}"
+                        echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
                     '''
                 }
             }
