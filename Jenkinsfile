@@ -31,10 +31,10 @@ pipeline {
                     // Debugging: Print current stage
                     echo 'Building and pushing app1'
                     try {
-                        dockerImage1 = docker.build("bahmah2024/app1:${env.BUILD_ID}", "app1/")
+                        dockerImage1 = docker.build("bahmah2024/app1:2.0.0", "app1/")
                         sh '''
                             #!/bin/bash
-                            docker push bahmah2024/app1:${BUILD_ID}
+                            docker push bahmah2024/app1:2.0.0
                         '''
                     } catch (Exception e) {
                         echo "Error during Build and Push app1: ${e.message}"
@@ -49,10 +49,10 @@ pipeline {
                     // Debugging: Print current stage
                     echo 'Building and pushing app2'
                     try {
-                        dockerImage2 = docker.build("bahmah2024/app2:${env.BUILD_ID}", "app2/")
+                        dockerImage2 = docker.build("bahmah2024/app2:2.0.0", "app2/")
                         sh '''
                             #!/bin/bash
-                            docker push bahmah2024/app2:${BUILD_ID}
+                            docker push bahmah2024/app2:2.0.0
                         '''
                     } catch (Exception e) {
                         echo "Error during Build and Push app2: ${e.message}"
@@ -67,10 +67,10 @@ pipeline {
                     // Debugging: Print current stage
                     echo 'Building and pushing app3'
                     try {
-                        dockerImage3 = docker.build("bahmah2024/app3:${env.BUILD_ID}", "app3/")
+                        dockerImage3 = docker.build("bahmah2024/app3:2.0.0", "app3/")
                         sh '''
                             #!/bin/bash
-                            docker push bahmah2024/app3:${BUILD_ID}
+                            docker push bahmah2024/app3:2.0.0
                         '''
                     } catch (Exception e) {
                         echo "Error during Build and Push app3: ${e.message}"
