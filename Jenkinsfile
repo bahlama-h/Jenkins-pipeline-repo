@@ -102,20 +102,22 @@ pipeline {
     post {
         success {
             script {
-                sendTelegramNotification("Build ${env.BUILD_ID} succeeded")
+                def message = "Build ${env.BUILD_ID} succeeded"
+                sendTelegramNotification(message)
             }
         }
         failure {
             script {
-                sendTelegramNotification("Build ${env.BUILD_ID} failed")
+                def message = "Build ${env.BUILD_ID} failed"
+                sendTelegramNotification(message)
             }
         }
     }
 }
 
 def sendTelegramNotification(String message) {
-    sh '''
+    sh """
         #!/bin/bash
-        curl -s -X POST https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d text="${message}"
-    '''
+        curl -s -X POST https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage -d chat_id=${env.TELEGRAM_CHAT_ID} -d text="${message}"
+    """
 }
